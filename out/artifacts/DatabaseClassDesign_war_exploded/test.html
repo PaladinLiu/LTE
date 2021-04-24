@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="jquery-3.5.1.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#login").click(function () {
+                $.getJSON({
+                    url:"login",
+                    error:function () {
+                        alert("failed");
+                    },
+                    success:function (data) {
+                        alert(data);
+                    },
+                    type:"POST",
+                    contentType:"application/json",
+                    data:JSON.stringify({
+                        "username":"root",
+                        "password":"root123456"
+                    })
+                })
+            })
+        })
+    </script>
+</head>
+<body>
+    <button id="login">login</button>
+</body>
+</html>

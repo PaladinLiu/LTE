@@ -20,6 +20,18 @@
         <property name="maxUploadSize" value="#{1024*1024*20}"/>
     </bean>
 
+
+    <!--cors跨域支持-->
+    <mvc:cors>
+        <mvc:mapping path="/**"
+                     allowed-origins="http://127.0.0.1:8020,http://127.0.0.1:8081,http://127.0.0.1:4200"
+                     allowed-methods="GET,POST,PUT,DELETE,OPTIONS"
+                     allowed-headers="Content-Type,token"
+                     allow-credentials="true"
+                     max-age="123" />
+    </mvc:cors>
+
+
     <!-- 扫静态资源 -->
     <mvc:default-servlet-handler></mvc:default-servlet-handler>
     <!-- 扫动态  -->

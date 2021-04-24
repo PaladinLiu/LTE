@@ -1,18 +1,22 @@
 package myj2ee.controller;
 
+import com.google.gson.Gson;
 import myj2ee.bean.User;
 import myj2ee.dao.UserDao;
 import myj2ee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class UserController {
@@ -23,72 +27,127 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping("/login")
-    public String login(@RequestParam("username")String username,
-                        @RequestParam("password")String password,
-                        HttpServletRequest request){
+    private Hashtable<String, User> loginUsers = new Hashtable<String, User>();
+
+    @ResponseBody
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String login(@RequestBody Map<String, String> map, HttpServletRequest request){
         System.out.println("login");
+
+        String username = map.get("username");
+        String password = map.get("password");
+        System.out.println(password);
+        String type = map.get("type");
+
+
         User user = userService.login(username, password);
+        System.out.println(user);
+        Map<String, Object> respbody = new HashMap<String, Object>();
+        Gson gson = new Gson();
         if(user == null){
-            request.setAttribute("msg", "用户名不存在");
-            return "forward:index.jsp";
+            respbody.put("isError", 1);
+            respbody.put("msg", "username not exists");
+            return gson.toJson(respbody);
+
         }else if(user.getPassword() == null){
-            request.setAttribute("msg", "密码错误");
-            return "forward:index.jsp";
+            respbody.put("isError", 1);
+            respbody.put("msg", "wrong password");
+            return gson.toJson(respbody);
+        }else if(user.isAdmin() != type.equals("admin")){
+            respbody.put("isError", 1);
+            respbody.put("msg", "wrong type");
+            return gson.toJson(respbody);
         }
 
-        request.getSession().setAttribute("user", user);
-        return "user/user";
+        loginUsers.put(username, user);
+        respbody.put("isError", 0);
+
+        return gson.toJson(respbody);
     }
 
-
+    @ResponseBody
     @RequestMapping("/logout")
-    public String logout(HttpServletRequest request){
+    public String logout(@RequestBody Map<String, String> map, HttpServletRequest request){
         System.out.println("logout");
-        request.getSession().setAttribute("user", null);
-        return "redirect:index.jsp";
+        if(loginUsers.keySet().contains(map.get("loginUser"))){
+            loginUsers.remove(map.get("loginUser"));
+        }
+
+        return "";
     }
 
+    @ResponseBody
     @RequestMapping("/userManage")
-    public String userManager(HttpServletRequest request){
+    public String userManager(@RequestBody Map<String, String> map, HttpServletRequest request){
         System.out.println("userManager");
-        User loginUser = (User) request.getSession().getAttribute("user");
+        User loginUser = loginUsers.get(map.get("loginUser"));
+        Map<String, Object> respbody = new HashMap<String, Object>();
+        Gson gson = new Gson();
         if(loginUser == null || !loginUser.isAdmin()){
-            return "redirect:index.jsp";
+            respbody.put("isErr", 1);
+            respbody.put("msg", "无管理员权限");
+            return gson.toJson(respbody);
         }
 
         List<User> users = userDao.getAllUser();
-        request.setAttribute("users", users);
+        respbody.put("isErr", 0);
+        respbody.put("users", users);
         for(User user: users){
             System.out.println(user);
         }
-        return "manage/userManage";
+        return gson.toJson(respbody);
     }
 
+    @ResponseBody
     @RequestMapping("/addUser")
-    public String addUser(@RequestParam("username") String username,
-                          @RequestParam("password") String password,
-                          HttpServletRequest request){
+    public String addUser(@RequestBody Map<String, String> map, HttpServletRequest request){
         System.out.println("addUser");
-        User loginUser = (User) request.getSession().getAttribute("user");
+
+        String username = map.get("username");
+        String password = map.get("password");
+
+        User loginUser = loginUsers.get(map.get("loginUser"));
+        Map<String, Object> respbody = new HashMap<String, Object>();
+        Gson gson = new Gson();
+
         if(loginUser == null || !loginUser.isAdmin()){
-            return "redirect:index.jsp";
+            respbody.put("isErr", 1);
+            respbody.put("msg", "无管理员权限");
+            return gson.toJson(respbody);
         }
+
         int state = userService.addUser(new User(null, username, password, false));
         System.out.println(state);
-        return "redirect:/userManage";
+        respbody.put("isErr", 0);
+
+        return gson.toJson(respbody);
+
     }
 
+    @ResponseBody
     @RequestMapping("/deleteUser")
-    public String deleteUser(@RequestParam("id") Integer id,
-                             HttpServletRequest request){
+    public String deleteUser(@RequestBody Map<String, String> map,HttpServletRequest request){
         System.out.println("deleteUser");
-        User loginUser = (User) request.getSession().getAttribute("user");
+
+        int id = Integer.parseInt(map.get("id"));
+
+        User loginUser = loginUsers.get(map.get("loginUser"));
+        Map<String, Object> respbody = new HashMap<String, Object>();
+        Gson gson = new Gson();
         if(loginUser == null || !loginUser.isAdmin()){
-            return "redirect:index.jsp";
+            respbody.put("isErr", 1);
+            respbody.put("msg", "无管理员权限");
+            return gson.toJson(respbody);
+        }else if(id == loginUser.getId()){
+            respbody.put("isErr", 1);
+            respbody.put("msg", "不能删除自己");
+            return gson.toJson(respbody);
         }
+
         int state = userService.deleteUser(id);
         System.out.println(state);
-        return "redirect:/userManage";
+        respbody.put("isErr", 0);
+
+        return gson.toJson(respbody);
     }
 }
