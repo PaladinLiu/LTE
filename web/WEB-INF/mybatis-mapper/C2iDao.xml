@@ -5,8 +5,23 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="myj2ee.dao.C2iDao">
     <insert id="addC2i">
-        insert into tbc2i(CITY, SCELL, NCELL, PrC2I9, C2I_Mean, Std, SampleCount, WeightedC2I)
-        values (#{CITY}, #{SCELL}, #{NCELL}, #{PrC2I9}, #{C2I_Mean}, #{Std}, #{SampleCount}, #{WeightedC2I})
+        insert into tbc2i
+        <foreach collection="columns" item="column" separator="," open="(" close=")">
+            #{column}
+        </foreach>
+        values
+        <if test = "c2is.size > 0">
+            <foreach collection="c2is" item="c2i" separator=",">
+                <foreach collection="c2i" item="attribute" separator="," open="(" close=")">
+                    #{attribute}
+                </foreach>
+            </foreach>
+        </if>
+        on duplicate KEY UPDATE
+        <foreach collection="columns" item="column" separator="," open="(" close=")">
+            #{column} = VALUES(#{column})
+        </foreach>
+
     </insert>
 
     <delete id="deleteC2i">
@@ -19,6 +34,12 @@
     
     <select id="getC2i" resultMap="infoC2i">
         select * from tbc2i where SCELL = #{SCELL} and NCELL = #{NCELL}
+    </select>
+
+    <select id="getAllColumnName" parameterType="java.lang.String" resultType="java.lang.String">
+        select COLUMN_NAME
+        from information_schema.COLUMNS
+        WHERE TABLE_NAME = 'tbC2i'
     </select>
 
     <resultMap id="infoC2i" type="myj2ee.bean.C2i">

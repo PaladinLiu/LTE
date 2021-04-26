@@ -5,8 +5,22 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="myj2ee.dao.C2inewDao">
     <insert id="addC2inew">
-        insert into tbc2inew(SCELL, NCELL, C2I_Mean, C2I_std, PrbC2I9,PrbABS6)
-        values (#{SCELL}, #{NCELL}, #{C2I_Mean}, #{C2I_std}, #{PrbC2I9}, #{PrbABS6})
+        insert into tbc2inew
+        <foreach collection="columns" item="column" separator="," open="(" close=")">
+            #{column}
+        </foreach>
+        values
+        <if test = "c2inews.size > 0">
+            <foreach collection="c2inews" item="c2inew" separator=",">
+                <foreach collection="c2inew" item="attribute" separator="," open="(" close=")">
+                    #{attribute}
+                </foreach>
+            </foreach>
+        </if>
+        on duplicate KEY UPDATE
+        <foreach collection="columns" item="column" separator="," open="(" close=")">
+            #{column} = VALUES(#{column})
+        </foreach>
     </insert>
 
     <delete id="deleteC2inew">
@@ -20,6 +34,13 @@
     <select id="getC2inew" resultMap="infoC2inew">
         select * from tbc2inew where SCELL = #{SCELL} and NCELL = #{NCELL}
     </select>
+
+    <select id="getAllColumnName" parameterType="java.lang.String" resultType="java.lang.String">
+        select COLUMN_NAME
+        from information_schema.COLUMNS
+        WHERE TABLE_NAME = 'tbc2inew'
+    </select>
+
     <resultMap id="infoC2inew" type="myj2ee.bean.C2inew">
         <result property="SCELL" column="SCELL"/>
         <result property="NCELL" column="NCELL"/>

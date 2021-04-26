@@ -5,8 +5,22 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="myj2ee.dao.MRODataDao">
     <insert id="addMROData">
-        insert into tbmrodata(TimeStamp, ServingSector, interferingSector, LteScRSRP, LteNcRSRP, LteNcEarfcn, LteNcPci)
-        values (#{TimeStamp}, #{ServingSector}, #{interferingSector},#{LteScRSRP},#{LteNcRSRP},#{LteNcEarfcn},#{LteNcPci})
+        insert into tbmrodata
+        <foreach collection="columns" item="column" separator="," open="(" close=")">
+            #{column}
+        </foreach>
+        values
+        <if test = "mrodatas.size > 0">
+            <foreach collection="mrodatas" item="mrodata" separator=",">
+                <foreach collection="mrodata" item="attribute" separator="," open="(" close=")">
+                    #{attribute}
+                </foreach>
+            </foreach>
+        </if>
+        on duplicate KEY UPDATE
+        <foreach collection="columns" item="column" separator="," open="(" close=")">
+            #{column} = VALUES(#{column})
+        </foreach>
     </insert>
 
     <delete id="deleteMROData">
@@ -19,6 +33,12 @@
 
     <select id="getMROData" resultMap="infoMROData">
         select * from tbmrodata where TimeStamp = #{TimeStamp} and ServingSector = #{ServingSector} and interferingSector = #{interferingSector}
+    </select>
+
+    <select id="getAllColumnName" parameterType="java.lang.String" resultType="java.lang.String">
+        select COLUMN_NAME
+        from information_schema.COLUMNS
+        WHERE TABLE_NAME = 'tbMROData'
     </select>
 
     <resultMap id="infoMROData" type="myj2ee.bean.MROData">

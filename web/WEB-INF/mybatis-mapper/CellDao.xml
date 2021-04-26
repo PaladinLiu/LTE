@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="myj2ee.dao.CellDao">
+    <insert id="addCell">
+        insert into tbcell
+        <foreach collection="columns" item="column" separator="," open="(" close=")">
+            #{column}
+        </foreach>
+        values
+        <if test = "cells.size > 0">
+            <foreach collection="cells" item="cell" separator=",">
+                <foreach collection="cell" item="attribute" separator="," open="(" close=")">
+                    #{attribute}
+                </foreach>
+            </foreach>
+        </if>
+        on duplicate KEY UPDATE
+        <foreach collection="columns" item="column" separator="," open="(" close=")">
+            #{column} = VALUES(#{column})
+        </foreach>
+    </insert>
+
+    <select id="getAllCell" resultMap="infoCell">
+        select * from tbcell
+    </select>
+
+    <select id="getCellbySectorID" resultMap="infoCell">
+        select * from tbcell where SECTOR_ID = #{SECTOR_ID}
+    </select>
+
+    <select id="getCellbySectorName" resultMap="infoCell">
+        select * from tbcell where SECTOR_NAME = #{SECTOR_NAME}
+    </select>
+
+    <select id="getCellbyENODEBID" resultMap="infoCell">
+        select * from tbcell where ENODEBID = #{ENODEBID}
+    </select>
+
+    <select id="getCellbyENODEBNAME" resultMap="infoCell">
+        select * from tbcell where ENODEB_NAME = #{ENODEB_NAME}
+    </select>
+
+    <select id="getAllColumnName" parameterType="java.lang.String" resultType="java.lang.String">
+        select COLUMN_NAME
+        from information_schema.COLUMNS
+        WHERE TABLE_NAME = 'tbCell'
+    </select>
+
+    <resultMap id="infoCell" type="myj2ee.bean.Cell">
+        <result property="CITY" column="CITY"/>
+        <result property="SECTOR_ID" column="SECTOR_ID"/>
+        <result property="SECTOR_NAME" column="SECTOR_NAME"/>
+        <result property="ENODEBID" column="ENODEBID"/>
+        <result property="ENODEB_NAME" column="ENODEB_NAME"/>
+        <result property="EARFCN" column="EARFCN"/>
+        <result property="PCI" column="PCI"/>
+        <result property="PSS" column="PSS"/>
+        <result property="SSS" column="SSS"/>
+        <result property="TAC" column="TAC"/>
+        <result property="VENDOR" column="VENDOR"/>
+        <result property="LONGITUDE" column="LONGITUDE"/>
+        <result property="LATITUDE" column="LATITUDE"/>
+        <result property="STYLE" column="STYLE"/>
+        <result property="AZIMUTH" column="AZIMUTH"/>
+        <result property="HEIGHT" column="HEIGHT"/>
+        <result property="ELECTTILT" column="ELECTTILT"/>
+        <result property="MECHTILT" column="MECHTILT"/>
+        <result property="TOTLETILT" column="TOTLETILT"/>
+    </resultMap>
+</mapper>

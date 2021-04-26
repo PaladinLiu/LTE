@@ -13,12 +13,12 @@ public class C2i3 {
     private String ccell;
 
     @Override
-    public String toString(){
-        return "C2i3{"+
-                "acell: " + acell +
-                ", bcell: "+ bcell +
-                ", ccell:"+ ccell +
-                "}";
+    public String toString() {
+        return "C2i3{" +
+                "acell='" + acell + '\'' +
+                ", bcell='" + bcell + '\'' +
+                ", ccell='" + ccell + '\'' +
+                '}';
     }
 
     public String getAcell() {

@@ -19,15 +19,15 @@ public class C2inew {
     private Float PrbABS6;
 
     @Override
-    public String toString(){
-        return "C2inew{"+
-                "SCELL: "+ SCELL +
-                ", NCELL: " + NCELL +
-                ", C2I_Mean: " + C2I_Mean +
-                ", C2I_std: " + C2I_std +
-                ", PrbC2I9: "+ PrbC2I9 +
-                ", PrbABS6:"+ PrbABS6 +
-                "}";
+    public String toString() {
+        return "C2inew{" +
+                "SCELL='" + SCELL + '\'' +
+                ", NCELL='" + NCELL + '\'' +
+                ", C2I_Mean=" + C2I_Mean +
+                ", C2I_std=" + C2I_std +
+                ", PrbC2I9=" + PrbC2I9 +
+                ", PrbABS6=" + PrbABS6 +
+                '}';
     }
 
     public String getSCELL() {

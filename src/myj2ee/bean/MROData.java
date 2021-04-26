@@ -21,17 +21,18 @@ public class MROData {
     private Short LteNcPci;
 
     @Override
-    public String toString(){
-        return "MROData{"+
-                "TimeStamp: " + TimeStamp +
-                ", ServingSector: "+ ServingSector +
-                ", interferingSector: " + interferingSector +
-                ", LteScRSRP: "+ LteScRSRP +
-                ", LteNcRSRP: " + LteNcRSRP +
-                ", LteNcEarfcn: "+ LteNcEarfcn +
-                ", LteNcPci:"+ LteNcPci +
-                "}";
+    public String toString() {
+        return "MROData{" +
+                "TimeStamp='" + TimeStamp + '\'' +
+                ", ServingSector='" + ServingSector + '\'' +
+                ", interferingSector='" + interferingSector + '\'' +
+                ", LteScRSRP=" + LteScRSRP +
+                ", LteNcRSRP=" + LteNcRSRP +
+                ", LteNcEarfcn=" + LteNcEarfcn +
+                ", LteNcPci=" + LteNcPci +
+                '}';
     }
+
     public String getTimeStamp() {
         return TimeStamp;
     }

@@ -23,17 +23,17 @@ public class C2i {
     private Integer WeightedC2I;
 
     @Override
-    public String toString(){
-        return "C2i{"+
-                "CITY: " + CITY +
-                ", SCELL: "+ SCELL +
-                ", NCELL: " + NCELL +
-                ", PrC2I9: "+ PrC2I9 +
-                ", C2I_Mean: " + C2I_Mean +
-                ", Std: " + Std +
-                ", SampleCount: "+ SampleCount +
-                ", WeightedC2I:"+ WeightedC2I +
-                "}";
+    public String toString() {
+        return "C2i{" +
+                "CITY='" + CITY + '\'' +
+                ", SCELL='" + SCELL + '\'' +
+                ", NCELL='" + NCELL + '\'' +
+                ", PrC2I9=" + PrC2I9 +
+                ", C2I_Mean=" + C2I_Mean +
+                ", Std=" + Std +
+                ", SampleCount=" + SampleCount +
+                ", WeightedC2I=" + WeightedC2I +
+                '}';
     }
 
     public String getCITY() {

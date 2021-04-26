@@ -9,6 +9,7 @@
         values (#{acell}, #{bcell}, #{ccell})
     </insert>
 
+
     <delete id="deleteC2i3">
         delete from tbc2i3 where acell = #{acell} and bcell = #{bcell} and ccell = #{ccell}
     </delete>
