@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="myj2ee.dao.C2iDao">
+    <insert id="addC2i">
+        insert into tbc2i(CITY, SCELL, NCELL, PrC2I9, C2I_Mean, Std, SampleCount, WeightedC2I)
+        values (#{CITY}, #{SCELL}, #{NCELL}, #{PrC2I9}, #{C2I_Mean}, #{Std}, #{SampleCount}, #{WeightedC2I})
+    </insert>
+
+    <delete id="deleteC2i">
+        delete from tbc2i where SCELL = #{SCELL} and NCELL = #{NCELL}
+    </delete>
+    
+    <select id="getAllC2i" resultMap="infoC2i">
+        select * from tbc2i
+    </select>
+    
+    <select id="getC2i" resultMap="infoC2i">
+        select * from tbc2i where SCELL = #{SCELL} and NCELL = #{NCELL}
+    </select>
+
+    <resultMap id="infoC2i" type="myj2ee.bean.C2i">
+        <result property="CITY" column="CITY"/>
+        <result property="SCELL" column="SCELL"/>
+        <result property="NCELL" column="NCELL"/>
+        <result property="PrC2I9" column="PrC2I9"/>
+        <result property="C2I_Mean" column="C2I_Mean"/>
+        <result property="Std" column="Std"/>
+        <result property="SampleCount" column="SampleCount"/>
+        <result property="WeightedC2I" column="WeightedC2I"/>
+    </resultMap>
+
+</mapper>

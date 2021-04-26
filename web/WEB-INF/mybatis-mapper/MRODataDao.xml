@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="myj2ee.dao.MRODataDao">
+    <insert id="addMROData">
+        insert into tbmrodata(TimeStamp, ServingSector, interferingSector, LteScRSRP, LteNcRSRP, LteNcEarfcn, LteNcPci)
+        values (#{TimeStamp}, #{ServingSector}, #{interferingSector},#{LteScRSRP},#{LteNcRSRP},#{LteNcEarfcn},#{LteNcPci})
+    </insert>
+
+    <delete id="deleteMROData">
+        delete from tbmrodata where TimeStamp = #{TimeStamp} and ServingSector = #{ServingSector} and interferingSector = #{interferingSector}
+    </delete>
+
+    <select id="getAllMROData" resultMap="infoMROData">
+        select * from tbmrodata
+    </select>
+
+    <select id="getMROData" resultMap="infoMROData">
+        select * from tbmrodata where TimeStamp = #{TimeStamp} and ServingSector = #{ServingSector} and interferingSector = #{interferingSector}
+    </select>
+
+    <resultMap id="infoMROData" type="myj2ee.bean.MROData">
+        <result property="TimeStamp" column="TimeStamp"/>
+        <result property="ServingSector" column="ServingSector"/>
+        <result property="interferingSector" column="interferingSector"/>
+        <result property="LteScRSRP" column="LteScRSRP"/>
+        <result property="LteNcRSRP" column="LteNcRSRP"/>
+        <result property="LteNcEarfcn" column="LteNcEarfcn"/>
+        <result property="LteNcPci" column="LteNcPci"/>
+    </resultMap>
+</mapper>

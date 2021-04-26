@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="myj2ee.dao.C2inewDao">
+    <insert id="addC2inew">
+        insert into tbc2inew(SCELL, NCELL, C2I_Mean, C2I_std, PrbC2I9,PrbABS6)
+        values (#{SCELL}, #{NCELL}, #{C2I_Mean}, #{C2I_std}, #{PrbC2I9}, #{PrbABS6})
+    </insert>
+
+    <delete id="deleteC2inew">
+        delete from tbc2inew where SCELL = #{SCELL} and NCELL = #{NCELL}
+    </delete>
+
+    <select id="getAllC2inew" resultMap="infoC2inew">
+        select * from tbc2inew
+    </select>
+
+    <select id="getC2inew" resultMap="infoC2inew">
+        select * from tbc2inew where SCELL = #{SCELL} and NCELL = #{NCELL}
+    </select>
+    <resultMap id="infoC2inew" type="myj2ee.bean.C2inew">
+        <result property="SCELL" column="SCELL"/>
+        <result property="NCELL" column="NCELL"/>
+        <result property="C2I_Mean" column="C2I_Mean"/>
+        <result property="C2I_std" column="C2I_std"/>
+        <result property="PrbC2I9" column="PrbC2I9"/>
+        <result property="PrbABS6" column="PrbABS6"/>
+    </resultMap>
+</mapper>
