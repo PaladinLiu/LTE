@@ -7,7 +7,7 @@
     <insert id="addMROData">
         insert into tbmrodata
         <foreach collection="columns" item="column" separator="," open="(" close=")">
-            #{column}
+            ${column}
         </foreach>
         values
         <if test = "mrodatas.size > 0">
@@ -19,7 +19,7 @@
         </if>
         on duplicate KEY UPDATE
         <foreach collection="columns" item="column" separator="," open="(" close=")">
-            #{column} = VALUES(#{column})
+            ${column} = VALUES(${column})
         </foreach>
     </insert>
 

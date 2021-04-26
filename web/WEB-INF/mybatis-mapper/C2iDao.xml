@@ -7,7 +7,7 @@
     <insert id="addC2i">
         insert into tbc2i
         <foreach collection="columns" item="column" separator="," open="(" close=")">
-            #{column}
+            ${column}
         </foreach>
         values
         <if test = "c2is.size > 0">
@@ -19,7 +19,7 @@
         </if>
         on duplicate KEY UPDATE
         <foreach collection="columns" item="column" separator="," open="(" close=")">
-            #{column} = VALUES(#{column})
+            ${column} = VALUES(${column})
         </foreach>
 
     </insert>
