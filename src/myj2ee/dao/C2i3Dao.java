@@ -4,6 +4,8 @@ import java.util.List;
 
 
 public interface C2i3Dao {
+
+
     public Integer addC2i3(C2i3 c2i3);
     public Integer deleteC2i3(String acell, String bcell, String ccell);
     public List<C2i3> getAllC2i3();

@@ -4,8 +4,12 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 
-public interface CellDao {
-    public Integer addCell(@Param("cells")List<List<Object>> cells, @Param("columns")List<String> columns);
+public interface CellDao extends BaseDao{
+
+    default public int insert50(List<List<Object>> lists, List<String> columns){
+        return addCell(lists, columns);
+    }
+    public int addCell(@Param("cells") List<List<Object>> cells, @Param("columns") List<String> columns);
     public List<Cell> getAllCell();
     public List<Cell> getCellbySectorID(String SECTOR_ID);
     public List<Cell> getCellbySectorName(String SECTOR_NAME);

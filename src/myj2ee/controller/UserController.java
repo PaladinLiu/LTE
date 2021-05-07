@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import sun.rmi.runtime.Log;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -21,8 +22,8 @@ import java.util.Map;
 @Controller
 public class UserController {
 
-    @Autowired
-    private UserDao userDao;
+//    @Autowired
+//    private UserDao userDao;
 
     @Autowired
     private UserService userService;
@@ -31,76 +32,76 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(@RequestBody Map<String, String> map, HttpServletRequest request){
+    public Map<String, Object> login(@RequestBody Map<String, String> map, HttpServletRequest request){
         System.out.println("login");
 
         String username = map.get("username");
         String password = map.get("password");
-        System.out.println(password);
         String type = map.get("type");
 
 
         User user = userService.login(username, password);
-        System.out.println(user);
         Map<String, Object> respbody = new HashMap<String, Object>();
-        Gson gson = new Gson();
         if(user == null){
             respbody.put("isError", 1);
-            respbody.put("msg", "username not exists");
-            return gson.toJson(respbody);
+            respbody.put("msg", "用户名不存在");
+            return respbody;
 
         }else if(user.getPassword() == null){
             respbody.put("isError", 1);
-            respbody.put("msg", "wrong password");
-            return gson.toJson(respbody);
+            respbody.put("msg", "密码错误");
+            return respbody;
+
         }else if(user.isAdmin() != type.equals("admin")){
             respbody.put("isError", 1);
-            respbody.put("msg", "wrong type");
-            return gson.toJson(respbody);
+            respbody.put("msg", "用户类型错误");
+            return respbody;
         }
 
         loginUsers.put(username, user);
         respbody.put("isError", 0);
 
-        return gson.toJson(respbody);
+        return respbody;
     }
 
     @ResponseBody
-    @RequestMapping("/logout")
-    public String logout(@RequestBody Map<String, String> map, HttpServletRequest request){
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public void logout(@RequestBody Map<String, String> map, HttpServletRequest request){
         System.out.println("logout");
+
         if(loginUsers.keySet().contains(map.get("loginUser"))){
             loginUsers.remove(map.get("loginUser"));
         }
 
-        return "";
     }
 
     @ResponseBody
-    @RequestMapping("/userManage")
-    public String userManager(@RequestBody Map<String, String> map, HttpServletRequest request){
+    @RequestMapping(value = "/userManage", method = RequestMethod.POST)
+    public Map<String, Object> userManager(@RequestBody Map<String, String> map, HttpServletRequest request){
         System.out.println("userManager");
+
         User loginUser = loginUsers.get(map.get("loginUser"));
         Map<String, Object> respbody = new HashMap<String, Object>();
-        Gson gson = new Gson();
+
         if(loginUser == null || !loginUser.isAdmin()){
-            respbody.put("isErr", 1);
+            respbody.put("isError", 1);
             respbody.put("msg", "无管理员权限");
-            return gson.toJson(respbody);
+            return respbody;
         }
 
-        List<User> users = userDao.getAllUser();
-        respbody.put("isErr", 0);
+        List<User> users = userService.getAllUser();
+        respbody.put("isError", 0);
         respbody.put("users", users);
+
         for(User user: users){
             System.out.println(user);
         }
-        return gson.toJson(respbody);
+        return respbody;
     }
 
     @ResponseBody
-    @RequestMapping("/addUser")
-    public String addUser(@RequestBody Map<String, String> map, HttpServletRequest request){
+    @RequestMapping(value = "/addUser", method = RequestMethod.POST)
+    public Map<String, Object> addUser(@RequestBody Map<String, String> map, HttpServletRequest request){
         System.out.println("addUser");
 
         String username = map.get("username");
@@ -108,25 +109,24 @@ public class UserController {
 
         User loginUser = loginUsers.get(map.get("loginUser"));
         Map<String, Object> respbody = new HashMap<String, Object>();
-        Gson gson = new Gson();
 
         if(loginUser == null || !loginUser.isAdmin()){
-            respbody.put("isErr", 1);
+            respbody.put("isError", 1);
             respbody.put("msg", "无管理员权限");
-            return gson.toJson(respbody);
+            return respbody;
         }
 
         int state = userService.addUser(new User(null, username, password, false));
         System.out.println(state);
-        respbody.put("isErr", 0);
+        respbody.put("isError", 0);
 
-        return gson.toJson(respbody);
+        return respbody;
 
     }
 
     @ResponseBody
-    @RequestMapping("/deleteUser")
-    public String deleteUser(@RequestBody Map<String, String> map,HttpServletRequest request){
+    @RequestMapping(value = "/deleteUser", method = RequestMethod.POST)
+    public Map<String, Object> deleteUser(@RequestBody Map<String, String> map,HttpServletRequest request){
         System.out.println("deleteUser");
 
         int id = Integer.parseInt(map.get("id"));
@@ -135,19 +135,19 @@ public class UserController {
         Map<String, Object> respbody = new HashMap<String, Object>();
         Gson gson = new Gson();
         if(loginUser == null || !loginUser.isAdmin()){
-            respbody.put("isErr", 1);
+            respbody.put("isError", 1);
             respbody.put("msg", "无管理员权限");
-            return gson.toJson(respbody);
+            return respbody;
         }else if(id == loginUser.getId()){
-            respbody.put("isErr", 1);
+            respbody.put("isError", 1);
             respbody.put("msg", "不能删除自己");
-            return gson.toJson(respbody);
+            return respbody;
         }
 
         int state = userService.deleteUser(id);
         System.out.println(state);
-        respbody.put("isErr", 0);
+        respbody.put("isError", 0);
 
-        return gson.toJson(respbody);
+        return respbody;
     }
 }
