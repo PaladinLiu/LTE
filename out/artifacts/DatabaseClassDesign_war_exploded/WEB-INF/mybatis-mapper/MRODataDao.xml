@@ -23,16 +23,8 @@
         </foreach>
     </insert>
 
-    <delete id="deleteMROData">
-        delete from tbmrodata where TimeStamp = #{TimeStamp} and ServingSector = #{ServingSector} and interferingSector = #{interferingSector}
-    </delete>
-
-    <select id="getAllMROData" resultMap="infoMROData">
+    <select id="getAllMROData" resultType="java.util.Map" resultSetType="FORWARD_ONLY" fetchSize="-2147483648">
         select * from tbmrodata
-    </select>
-
-    <select id="getMROData" resultMap="infoMROData">
-        select * from tbmrodata where TimeStamp = #{TimeStamp} and ServingSector = #{ServingSector} and interferingSector = #{interferingSector}
     </select>
 
     <select id="getAllColumnName" parameterType="java.lang.String" resultType="java.lang.String">
@@ -40,6 +32,16 @@
         from information_schema.COLUMNS
         WHERE TABLE_NAME = 'tbMROData'
         order by ORDINAL_POSITION
+    </select>
+
+    <select id="getRowCount" resultType="java.lang.Integer">
+        select count(*) from tbmrodata
+    </select>
+    
+    <select id="calculateC2I" resultType="java.util.Map">
+        select ServingSector as SCELL, interferingSector as NCELL, avg(LteScRSRP - LteNcRSRP) as C2I_mean, std(LteScRSRP - LteNcRSRP) as C2I_std
+        from tbmrodata
+        group by ServingSector, interferingSector
     </select>
 
     <resultMap id="infoMROData" type="myj2ee.bean.MROData">
@@ -51,4 +53,6 @@
         <result property="LteNcEarfcn" column="LteNcEarfcn"/>
         <result property="LteNcPci" column="LteNcPci"/>
     </resultMap>
+
+
 </mapper>

@@ -23,8 +23,24 @@
         </foreach>
     </insert>
 
-    <select id="getAllCell" resultMap="infoCell">
+    <select id="getAllCell" resultType="java.util.Map" resultSetType="FORWARD_ONLY" fetchSize="-2147483648">
         select * from tbcell
+    </select>
+
+    <select id="getAllSectorId" resultType="String">
+        select SECTOR_ID from tbcell
+    </select>
+
+    <select id="getAllSectorName" resultType="String">
+        select SECTOR_NAME from tbcell
+    </select>
+    
+    <select id="getAllENODEBID" resultType="Integer">
+        select distinct (ENODEBID) from tbcell
+    </select>
+
+    <select id="getAllENODEBNAME" resultType="String">
+        select distinct (ENODEB_NAME) from tbcell
     </select>
 
     <select id="getCellbySectorID" resultMap="infoCell">
@@ -50,25 +66,29 @@
         order by ORDINAL_POSITION
     </select>
 
+    <select id="getRowCount" resultType="java.lang.Integer">
+        select count(*) from tbcell
+    </select>
+
     <resultMap id="infoCell" type="myj2ee.bean.Cell">
-        <result property="CITY" column="CITY"/>
-        <result property="SECTOR_ID" column="SECTOR_ID"/>
-        <result property="SECTOR_NAME" column="SECTOR_NAME"/>
-        <result property="ENODEBID" column="ENODEBID"/>
-        <result property="ENODEB_NAME" column="ENODEB_NAME"/>
-        <result property="EARFCN" column="EARFCN"/>
-        <result property="PCI" column="PCI"/>
-        <result property="PSS" column="PSS"/>
-        <result property="SSS" column="SSS"/>
-        <result property="TAC" column="TAC"/>
-        <result property="VENDOR" column="VENDOR"/>
-        <result property="LONGITUDE" column="LONGITUDE"/>
-        <result property="LATITUDE" column="LATITUDE"/>
-        <result property="STYLE" column="STYLE"/>
-        <result property="AZIMUTH" column="AZIMUTH"/>
-        <result property="HEIGHT" column="HEIGHT"/>
-        <result property="ELECTTILT" column="ELECTTILT"/>
-        <result property="MECHTILT" column="MECHTILT"/>
-        <result property="TOTLETILT" column="TOTLETILT"/>
+        <result property="city" column="CITY"/>
+        <result property="sectorId" column="SECTOR_ID"/>
+        <result property="sectorName" column="SECTOR_NAME"/>
+        <result property="enodebId" column="ENODEBID"/>
+        <result property="enodebName" column="ENODEB_NAME"/>
+        <result property="earfcn" column="EARFCN"/>
+        <result property="pci" column="PCI"/>
+        <result property="pss" column="PSS"/>
+        <result property="sss" column="SSS"/>
+        <result property="tac" column="TAC"/>
+        <result property="vendor" column="VENDOR"/>
+        <result property="longitude" column="LONGITUDE"/>
+        <result property="latitude" column="LATITUDE"/>
+        <result property="style" column="STYLE"/>
+        <result property="azimuth" column="AZIMUTH"/>
+        <result property="height" column="HEIGHT"/>
+        <result property="electtilt" column="ELECTTILT"/>
+        <result property="mechtilt" column="MECHTILT"/>
+        <result property="totletilt" column="TOTLETILT"/>
     </resultMap>
 </mapper>

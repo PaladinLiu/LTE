@@ -23,17 +23,9 @@
         </foreach>
 
     </insert>
-
-    <delete id="deleteC2i">
-        delete from tbc2i where SCELL = #{SCELL} and NCELL = #{NCELL}
-    </delete>
     
-    <select id="getAllC2i" resultMap="infoC2i">
+    <select id="getAllC2i" resultType="java.util.Map" resultSetType="FORWARD_ONLY" fetchSize="-2147483648">
         select * from tbc2i
-    </select>
-    
-    <select id="getC2i" resultMap="infoC2i">
-        select * from tbc2i where SCELL = #{SCELL} and NCELL = #{NCELL}
     </select>
 
     <select id="getAllColumnName" parameterType="java.lang.String" resultType="java.lang.String">
@@ -43,15 +35,12 @@
         order by ORDINAL_POSITION
     </select>
 
-    <resultMap id="infoC2i" type="myj2ee.bean.C2i">
-        <result property="CITY" column="CITY"/>
-        <result property="SCELL" column="SCELL"/>
-        <result property="NCELL" column="NCELL"/>
-        <result property="PrC2I9" column="PrC2I9"/>
-        <result property="C2I_Mean" column="C2I_Mean"/>
-        <result property="Std" column="Std"/>
-        <result property="SampleCount" column="SampleCount"/>
-        <result property="WeightedC2I" column="WeightedC2I"/>
-    </resultMap>
+    <select id="getRowCount" resultType="java.lang.Integer">
+        select count(*) from tbc2i
+    </select>
+
+    <select id="get50Row" resultType="java.util.Map">
+        select * from tbc2i limit #{start}, 50
+    </select>
 
 </mapper>

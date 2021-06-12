@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="myj2ee.dao.KPIDao">
+    <insert id="addKPI">
+        insert into tbcellkpi
+        <foreach collection="columns" item="column" separator="," open="(" close=")">
+            ${column}
+        </foreach>
+        values
+        <if test = "kpis.size > 0">
+            <foreach collection="kpis" item="kpi" separator=",">
+                <foreach collection="kpi" item="attribute" separator="," open="(" close=")">
+                    #{attribute}
+                </foreach>
+            </foreach>
+        </if>
+        on duplicate KEY UPDATE
+        <foreach collection="columns" item="column" separator=",">
+            ${column} = VALUES(${column})
+        </foreach>
+    </insert>
+
+    <select id="getAllColumnName" parameterType="java.lang.String" resultType="java.lang.String">
+        select COLUMN_NAME
+        from information_schema.COLUMNS
+        WHERE TABLE_NAME = 'tbCellKPI'
+        order by ORDINAL_POSITION
+    </select>
+
+    <select id="getAllKPI" resultType="java.util.Map" resultSetType="FORWARD_ONLY" fetchSize="-2147483648">
+        select * from tbcellkpi
+    </select>
+
+    <select id="getRowCount" resultType="java.lang.Integer">
+        select count(*) from tbcellkpi
+    </select>
+
+    <select id="getKPIAttributeByCellName" resultType="java.util.Map">
+        select start_time, ${colName}
+        from tbcellkpi
+        where community_name = #{cellName} and start_time between #{startTime} and #{endTime}
+        order by start_time ASC
+    </select>
+
+    <select id="getAllCellNames" resultType="String">
+        select distinct(community_name) from tbcellkpi
+    </select>
+
+</mapper>
+
+

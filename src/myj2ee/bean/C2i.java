@@ -3,6 +3,11 @@ package myj2ee.bean;
 
 // tbc2i
 public class C2i {
+
+    public C2i(){
+
+    }
+
     public C2i(String CITY, String SCELL, String NCELL, Integer PrC2I9, Float C2I_Mean, Float Std, Integer SampleCount, Integer WeightedC2I){
         this.CITY = CITY;
         this.SCELL = SCELL;

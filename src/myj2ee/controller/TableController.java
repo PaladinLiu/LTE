@@ -1,13 +1,7 @@
 package myj2ee.controller;
 
-import com.google.gson.Gson;
 import myj2ee.common.Common;
 import myj2ee.service.TableService;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,14 +15,14 @@ import java.io.*;
 import java.util.*;
 
 @Controller
-public class TableControl {
+public class TableController {
 
     @Autowired
     private TableService tableService;
 
     private Set<String> tableNames = new HashSet<String>();
 
-    public TableControl(){
+    public TableController(){
         tableNames.add("1.tbCell.csv");
         tableNames.add("9.tbMROData.csv");
         tableNames.add("10.tbC2I.xlsx");
@@ -38,7 +32,7 @@ public class TableControl {
 
     @ResponseBody
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public Map<String, Object> upload(@RequestParam("tables") MultipartFile[] tables, HttpServletRequest request) throws IOException{
+    public Map<String, Object> upload(@RequestParam("tables") MultipartFile[] tables) throws IOException{
         String dirPath = Common.importPath;
         Map<String, Object> respbody = new HashMap<String, Object>();
         System.out.println(tables.length);
@@ -92,7 +86,7 @@ public class TableControl {
     @RequestMapping(value = "/download", method = RequestMethod.POST)
     public ResponseEntity<byte[]> download(@RequestBody Map<String, Object> map) throws IOException{
         String dirPath = Common.exportPath;
-        String filename = (String) map.get("tables");
+        String filename = (String) map.get("tableName");
         FileInputStream is = new FileInputStream(dirPath + filename);
 
         byte[] tmp = new byte[is.available()];
@@ -101,9 +95,22 @@ public class TableControl {
 
         //2、将要下载的文件流返回
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set("Content-Disposition", "attachment;filename="+filename);
+        httpHeaders.set("Content-Disposition", filename);
 
         return new ResponseEntity<byte[]>(tmp, httpHeaders, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "/getTables", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> getTableNames(){
+        File dir = new File(Common.exportPath);
+        String[] tableNmaes = dir.list();
+        Map<String, Object> respbody = new HashMap<>();
+        respbody.put("tables", tableNmaes);
+        respbody.put("isError", 0);
+
+        return respbody;
     }
 
 }

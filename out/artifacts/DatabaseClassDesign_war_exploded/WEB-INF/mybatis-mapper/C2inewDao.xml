@@ -23,17 +23,24 @@
         </foreach>
     </insert>
 
-    <delete id="deleteC2inew">
-        delete from tbc2inew where SCELL = #{SCELL} and NCELL = #{NCELL}
-    </delete>
+    <insert id="generateNew">
+        insert into tbc2inew(SCELL, NCELL, C2I_mean, C2I_std, PrbC2I9, PrbABS6) values
+        <foreach collection="c2is" item="c2i" separator=",">
+            (#{c2i.SCELL},#{c2i.NCELL},#{c2i.C2I_mean},#{c2i.C2I_std},#{c2i.PrbC2I9},#{c2i.PrbABS6})
+        </foreach>
+    </insert>
 
-    <select id="getAllC2inew" resultMap="infoC2inew">
+    <select id="getAllC2inew" resultType="java.util.Map" resultSetType="FORWARD_ONLY" fetchSize="-2147483648">
         select * from tbc2inew
     </select>
 
-    <select id="getC2inew" resultMap="infoC2inew">
-        select * from tbc2inew where SCELL = #{SCELL} and NCELL = #{NCELL}
+    <select id="getRowCount" resultType="java.lang.Integer">
+        select count(*) from tbc2inew
     </select>
+
+    <update id="clear">
+        truncate tbc2inew
+    </update>
 
     <select id="getAllColumnName" parameterType="java.lang.String" resultType="java.lang.String">
         select COLUMN_NAME

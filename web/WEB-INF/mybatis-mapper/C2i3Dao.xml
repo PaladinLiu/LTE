@@ -4,27 +4,35 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="myj2ee.dao.C2i3Dao">
-    <insert id="addC2i3">
-        insert into tbc2i3(acell, bcell, ccell)
-        values (#{acell}, #{bcell}, #{ccell})
-    </insert>
 
-
-    <delete id="deleteC2i3">
-        delete from tbc2i3 where acell = #{acell} and bcell = #{bcell} and ccell = #{ccell}
-    </delete>
-
-    <select id="getAllC2i3" resultMap="infoC2i3">
+    <select id="getAllC2i3" resultType="java.util.Map" resultSetType="FORWARD_ONLY" fetchSize="-2147483648">
         select * from tbc2i3
     </select>
 
-    <select id="getC2i3" resultMap="infoC2i3">
-        select * from tbc2i3 where acell = #{acell} and bcell = #{bcell} and ccell = #{ccell}
+
+    <insert id="generate3">
+        insert into tbc2i3
+        with tbc2i2_unordered(SCELL, NCELL) as
+        (select SCELL, NCELL from tbc2inew as A
+        where (PrbABS6 <![CDATA[ > ]]> #{x} or (select PrbABS6 from tbc2inew as B where A.NCELL = B.SCELL and A.SCELL = B.NCELL) <![CDATA[ > ]]> #{x})),
+        tbc2i2(CELL1, CELL2) as
+        ((select SCELL as CELL1, NCELL as CELL2 from tbc2i2_unordered where SCELL <![CDATA[ < ]]> NCELL) union (select NCELL as CELL1, SCELL as CELL2 from tbc2i2_unordered where NCELL <![CDATA[ < ]]> SCELL))
+        select A.CELL1, A.CELL2, B.CELL2 from tbc2i2 as A join tbc2i2 as B on A.CELL2 = B.CELL1
+    </insert>
+
+    <update id="clear">
+        truncate tbc2i3
+    </update>
+
+    <select id="getRowCount" resultType="java.lang.Integer">
+        select count(*) from tbc2i3
     </select>
 
-    <resultMap id="infoC2i3" type="myj2ee.bean.C2i3">
-        <result property="acell" column="acell"/>
-        <result property="bcell" column="bcell"/>
-        <result property="ccell" column="ccell"/>
-    </resultMap>
+    <select id="getAllColumnName" parameterType="java.lang.String" resultType="java.lang.String">
+        select COLUMN_NAME
+        from information_schema.COLUMNS
+        WHERE TABLE_NAME = 'tbc2i3'
+        order by ORDINAL_POSITION
+    </select>
+
 </mapper>

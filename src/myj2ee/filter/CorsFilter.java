@@ -16,8 +16,6 @@ import org.springframework.stereotype.Component;
 
 /**
  * 允许跨域过滤器(Cross-Origin Resource Sharing)
- * @author user
- *
  */
 @Component
 public class CorsFilter implements Filter {

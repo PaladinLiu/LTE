@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="myj2ee.dao.PRBDao">
+
+    <insert id="addPRB">
+        insert into tbprb
+        <foreach collection="columns" item="column" separator="," open="(" close=")">
+            ${column}
+        </foreach>
+        values
+        <if test = "prbs.size > 0">
+            <foreach collection="prbs" item="prb" separator=",">
+                <foreach collection="prb" item="attribute" separator="," open="(" close=")">
+                    #{attribute}
+                </foreach>
+            </foreach>
+        </if>
+        on duplicate KEY UPDATE
+        <foreach collection="columns" item="column" separator=",">
+            ${column} = VALUES(${column})
+        </foreach>
+    </insert>
+    
+    <select id="getAllPRB" resultType="java.util.Map" resultSetType="FORWARD_ONLY" fetchSize="-2147483648">
+        select * from tbprb
+    </select>
+
+    <select id="getAllColumnName" parameterType="java.lang.String" resultType="java.lang.String">
+        select COLUMN_NAME
+        from information_schema.COLUMNS
+        WHERE TABLE_NAME = 'tbPRB'
+        order by ORDINAL_POSITION
+    </select>
+
+    <select id="getRowCount" resultType="java.lang.Integer">
+        select count(*) from tbprb
+    </select>
+
+    <select id="getLimit" resultType="java.util.Map">
+        select min(Start_time) as min_time, max(Start_time) as max_time from tbprb
+    </select>
+
+</mapper>
+
+

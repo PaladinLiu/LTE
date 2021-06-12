@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="myj2ee.dao.PRBNewDao">
+    <insert id="generateNew">
+        insert into tbprbnew
+        (select #{startTime}, Base_station_name,
+        <foreach collection="columns" item="column" separator=",">
+            <if test='column.contains("PRB_")'>
+                avg(${column})
+            </if>
+        </foreach>
+        from (select * from tbprb where Start_time <![CDATA[ >= ]]> #{startTime} and Start_time <![CDATA[ < ]]> #{endTime}) as A
+        group by Base_station_name)
+    </insert>
+
+    <update id="clear">
+        truncate tbprbnew
+    </update>
+
+    <select id="getAllColumnName" parameterType="java.lang.String" resultType="java.lang.String">
+        select COLUMN_NAME
+        from information_schema.COLUMNS
+        WHERE TABLE_NAME = 'tbPRBnew'
+        order by ORDINAL_POSITION
+    </select>
+
+    <select id="getRowCount" resultType="java.lang.Integer">
+        select count(*) from tbprbnew
+    </select>
+
+    <select id="getAllPRB" resultType="java.util.Map" resultSetType="FORWARD_ONLY" fetchSize="-2147483648">
+        select * from tbprbnew
+    </select>
+
+    <select id="getPRBAttributeByStationName" resultType="java.util.Map">
+        select start_time, ${colName}
+        from tbprbnew
+        where Base_station_name = #{stationName} and start_time between #{startTime} and #{endTime}
+        order by start_time ASC
+    </select>
+
+    <select id="getAllStationNames" resultType="String">
+        select distinct(Base_station_name) from tbprbnew
+    </select>
+
+</mapper>
+
+

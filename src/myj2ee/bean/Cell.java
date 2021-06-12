@@ -3,222 +3,227 @@ package myj2ee.bean;
 
 // tbCell
 public class Cell {
-    public Cell(String CITY, String SECTOR_ID, String SECTOR_NAME, Integer ENODEBID, String ENODEB_NAME, Integer EARFCN, Integer PCI, Integer PSS, Integer SSS, Integer TAC, String VENDOR, Float LONGITUDE, Float LATITUDE, String STYLE, Float AZIMUTH, Float HEIGHT, Float ELECTTILT, Float MECHTILT, Float TOTLETILT) {
-        this.CITY = CITY;
-        this.SECTOR_ID = SECTOR_ID;
-        this.SECTOR_NAME = SECTOR_NAME;
-        this.ENODEBID = ENODEBID;
-        this.ENODEB_NAME = ENODEB_NAME;
-        this.EARFCN = EARFCN;
-        this.PCI = PCI;
-        this.PSS = PSS;
-        this.SSS = SSS;
-        this.TAC = TAC;
-        this.VENDOR = VENDOR;
-        this.LONGITUDE = LONGITUDE;
-        this.LATITUDE = LATITUDE;
-        this.STYLE = STYLE;
-        this.AZIMUTH = AZIMUTH;
-        this.HEIGHT = HEIGHT;
-        this.ELECTTILT = ELECTTILT;
-        this.MECHTILT = MECHTILT;
-        this.TOTLETILT = TOTLETILT;
+    public Cell(){
+
     }
 
-    private String CITY;
-    private String SECTOR_ID;
-    private String SECTOR_NAME;
-    private Integer ENODEBID;
-    private String ENODEB_NAME;
-    private Integer EARFCN;
-    private Integer PCI;
-    private Integer PSS;
-    private Integer SSS;
-    private Integer TAC;
-    private String VENDOR;
-    private Float LONGITUDE;
-    private Float LATITUDE;
-    private String STYLE;
-    private Float AZIMUTH;
-    private Float HEIGHT;
-    private Float ELECTTILT;
-    private Float MECHTILT;
-    private Float TOTLETILT;
+    public Cell(String city, String sectorId, String sectorName, Integer enodebId, String enodebName, Integer earfcn, Integer pci, Integer pss, Integer sss, Integer tac, String vendor, Float longitude, Float latitude, String style, Float azimuth, Float height, Float electtilt, Float mechtilt, Float totletilt) {
+        this.city = city;
+        this.sectorId = sectorId;
+        this.sectorName = sectorName;
+        this.enodebId = enodebId;
+        this.enodebName = enodebName;
+        this.earfcn = earfcn;
+        this.pci = pci;
+        this.pss = pss;
+        this.sss = sss;
+        this.tac = tac;
+        this.vendor = vendor;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.style = style;
+        this.azimuth = azimuth;
+        this.height = height;
+        this.electtilt = electtilt;
+        this.mechtilt = mechtilt;
+        this.totletilt = totletilt;
+    }
+
+    private String city;
+    private String sectorId;
+    private String sectorName;
+    private Integer enodebId;
+    private String enodebName;
+    private Integer earfcn;
+    private Integer pci;
+    private Integer pss;
+    private Integer sss;
+    private Integer tac;
+    private String vendor;
+    private Float longitude;
+    private Float latitude;
+    private String style;
+    private Float azimuth;
+    private Float height;
+    private Float electtilt;
+    private Float mechtilt;
+    private Float totletilt;
+
 
     @Override
     public String toString() {
         return "Cell{" +
-                "CITY='" + CITY + '\'' +
-                ", SECTOR_ID='" + SECTOR_ID + '\'' +
-                ", SECTOR_NAME='" + SECTOR_NAME + '\'' +
-                ", ENODEBID=" + ENODEBID +
-                ", ENODEB_NAME='" + ENODEB_NAME + '\'' +
-                ", EARFCN=" + EARFCN +
-                ", PCI=" + PCI +
-                ", PSS=" + PSS +
-                ", SSS=" + SSS +
-                ", TAC=" + TAC +
-                ", VENDOR='" + VENDOR + '\'' +
-                ", LONGITUDE=" + LONGITUDE +
-                ", LATITUDE=" + LATITUDE +
-                ", STYLE='" + STYLE + '\'' +
-                ", AZIMUTH=" + AZIMUTH +
-                ", HEIGHT=" + HEIGHT +
-                ", ELECTTILT=" + ELECTTILT +
-                ", MECHTILT=" + MECHTILT +
-                ", TOTLETILT=" + TOTLETILT +
+                "CITY='" + city + '\'' +
+                ", SECTOR_ID='" + sectorId + '\'' +
+                ", SECTOR_NAME='" + sectorName + '\'' +
+                ", ENODEBID=" + enodebId +
+                ", ENODEB_NAME='" + enodebName + '\'' +
+                ", EARFCN=" + earfcn +
+                ", PCI=" + pci +
+                ", PSS=" + pss +
+                ", SSS=" + sss +
+                ", TAC=" + tac +
+                ", VENDOR='" + vendor + '\'' +
+                ", LONGITUDE=" + longitude +
+                ", LATITUDE=" + latitude +
+                ", STYLE='" + style + '\'' +
+                ", AZIMUTH=" + azimuth +
+                ", HEIGHT=" + height +
+                ", ELECTTILT=" + electtilt +
+                ", MECHTILT=" + mechtilt +
+                ", TOTLETILT=" + totletilt +
                 '}';
     }
 
-    public String getCITY() {
-        return CITY;
+    public String getCity() {
+        return city;
     }
 
-    public void setCITY(String CITY) {
-        this.CITY = CITY;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public String getSECTOR_ID() {
-        return SECTOR_ID;
+    public String getSectorId() {
+        return sectorId;
     }
 
-    public void setSECTOR_ID(String SECTOR_ID) {
-        this.SECTOR_ID = SECTOR_ID;
+    public void setSectorId(String sectorId) {
+        this.sectorId = sectorId;
     }
 
-    public String getSECTOR_NAME() {
-        return SECTOR_NAME;
+    public String getSectorName() {
+        return sectorName;
     }
 
-    public void setSECTOR_NAME(String SECTOR_NAME) {
-        this.SECTOR_NAME = SECTOR_NAME;
+    public void setSectorName(String sectorName) {
+        this.sectorName = sectorName;
     }
 
-    public Integer getENODEBID() {
-        return ENODEBID;
+    public Integer getEnodebId() {
+        return enodebId;
     }
 
-    public void setENODEBID(Integer ENODEBID) {
-        this.ENODEBID = ENODEBID;
+    public void setEnodebId(Integer enodebId) {
+        this.enodebId = enodebId;
     }
 
-    public String getENODEB_NAME() {
-        return ENODEB_NAME;
+    public String getEnodebName() {
+        return enodebName;
     }
 
-    public void setENODEB_NAME(String ENODEB_NAME) {
-        this.ENODEB_NAME = ENODEB_NAME;
+    public void setEnodebName(String enodebName) {
+        this.enodebName = enodebName;
     }
 
-    public Integer getEARFCN() {
-        return EARFCN;
+    public Integer getEarfcn() {
+        return earfcn;
     }
 
-    public void setEARFCN(Integer EARFCN) {
-        this.EARFCN = EARFCN;
+    public void setEarfcn(Integer earfcn) {
+        this.earfcn = earfcn;
     }
 
-    public Integer getPCI() {
-        return PCI;
+    public Integer getPci() {
+        return pci;
     }
 
-    public void setPCI(Integer PCI) {
-        this.PCI = PCI;
+    public void setPci(Integer pci) {
+        this.pci = pci;
     }
 
-    public Integer getPSS() {
-        return PSS;
+    public Integer getPss() {
+        return pss;
     }
 
-    public void setPSS(Integer PSS) {
-        this.PSS = PSS;
+    public void setPss(Integer pss) {
+        this.pss = pss;
     }
 
-    public Integer getSSS() {
-        return SSS;
+    public Integer getSss() {
+        return sss;
     }
 
-    public void setSSS(Integer SSS) {
-        this.SSS = SSS;
+    public void setSss(Integer sss) {
+        this.sss = sss;
     }
 
-    public Integer getTAC() {
-        return TAC;
+    public Integer getTac() {
+        return tac;
     }
 
-    public void setTAC(Integer TAC) {
-        this.TAC = TAC;
+    public void setTac(Integer tac) {
+        this.tac = tac;
     }
 
-    public String getVENDOR() {
-        return VENDOR;
+    public String getVendor() {
+        return vendor;
     }
 
-    public void setVENDOR(String VENDOR) {
-        this.VENDOR = VENDOR;
+    public void setVendor(String vendor) {
+        this.vendor = vendor;
     }
 
-    public Float getLONGITUDE() {
-        return LONGITUDE;
+    public Float getLongitude() {
+        return longitude;
     }
 
-    public void setLONGITUDE(Float LONGITUDE) {
-        this.LONGITUDE = LONGITUDE;
+    public void setLongitude(Float longitude) {
+        this.longitude = longitude;
     }
 
-    public Float getLATITUDE() {
-        return LATITUDE;
+    public Float getLatitude() {
+        return latitude;
     }
 
-    public void setLATITUDE(Float LATITUDE) {
-        this.LATITUDE = LATITUDE;
+    public void setLatitude(Float latitude) {
+        this.latitude = latitude;
     }
 
-    public String getSTYLE() {
-        return STYLE;
+    public String getStyle() {
+        return style;
     }
 
-    public void setSTYLE(String STYLE) {
-        this.STYLE = STYLE;
+    public void setStyle(String style) {
+        this.style = style;
     }
 
-    public Float getAZIMUTH() {
-        return AZIMUTH;
+    public Float getAzimuth() {
+        return azimuth;
     }
 
-    public void setAZIMUTH(Float AZIMUTH) {
-        this.AZIMUTH = AZIMUTH;
+    public void setAzimuth(Float azimuth) {
+        this.azimuth = azimuth;
     }
 
-    public Float getHEIGHT() {
-        return HEIGHT;
+    public Float getHeight() {
+        return height;
     }
 
-    public void setHEIGHT(Float HEIGHT) {
-        this.HEIGHT = HEIGHT;
+    public void setHeight(Float height) {
+        this.height = height;
     }
 
-    public Float getELECTTILT() {
-        return ELECTTILT;
+    public Float getElecttilt() {
+        return electtilt;
     }
 
-    public void setELECTTILT(Float ELECTTILT) {
-        this.ELECTTILT = ELECTTILT;
+    public void setElecttilt(Float electtilt) {
+        this.electtilt = electtilt;
     }
 
-    public Float getMECHTILT() {
-        return MECHTILT;
+    public Float getMechtilt() {
+        return mechtilt;
     }
 
-    public void setMECHTILT(Float MECHTILT) {
-        this.MECHTILT = MECHTILT;
+    public void setMechtilt(Float mechtilt) {
+        this.mechtilt = mechtilt;
     }
 
-    public Float getTOTLETILT() {
-        return TOTLETILT;
+    public Float getTotletilt() {
+        return totletilt;
     }
 
-    public void setTOTLETILT(Float TOTLETILT) {
-        this.TOTLETILT = TOTLETILT;
+    public void setTotletilt(Float totletilt) {
+        this.totletilt = totletilt;
     }
 }
